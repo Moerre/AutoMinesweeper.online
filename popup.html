@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      width: 340px;
+      padding: 15px;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background-color: #f8f9fa;
+      color: #333;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .header h3 {
+      margin: 0;
+      color: #2c3e50;
+    }
+    .controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+    button {
+      padding: 10px 8px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 12px;
+      transition: all 0.2s;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+    }
+    button:active {
+      transform: translateY(0);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+    #startGame {
+      background-color: #4CAF50;
+      color: white;
+    }
+    #autoSolve {
+      background-color: #2196F3;
+      color: white;
+    }
+    #stepSolve {
+      background-color: #FF9800;
+      color: white;
+    }
+    #markMines {
+      background-color: #F44336;
+      color: white;
+    }
+    #reset {
+      background-color: #757575;
+      color: white;
+    }
+    .status-container {
+      background-color: white;
+      border-radius: 6px;
+      padding: 12px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .status-container h4 {
+      margin: 0 0 10px 0;
+      font-size: 14px;
+      color: #2c3e50;
+    }
+    .status-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .status-item {
+      font-size: 12px;
+    }
+    .status-label {
+      font-weight: bold;
+      color: #666;
+    }
+    .status-value {
+      color: #333;
+    }
+    .progress {
+      height: 8px;
+      background-color: #e0e0e0;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #4CAF50, #8BC34A);
+      width: 0%;
+      transition: width 0.3s;
+    }
+    .settings {
+      background-color: white;
+      border-radius: 6px;
+      padding: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .settings h4 {
+      margin: 0 0 10px 0;
+      font-size: 14px;
+      color: #2c3e50;
+    }
+    .setting-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .setting-row label {
+      font-size: 12px;
+      color: #555;
+    }
+    .setting-row input[type="number"] {
+      width: 60px;
+      padding: 4px 6px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+    .setting-row input[type="checkbox"] {
+      transform: scale(1.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h3>扫雷自动解算器</h3>
+  </div>
+  
+  <div class="controls">
+    <button id="startGame">开始游戏</button>
+    <button id="autoSolve">自动扫雷</button>
+    <button id="stepSolve">单步扫雷</button>
+    <button id="markMines">标记地雷</button>
+    <button id="reset">重置</button>
+  </div>
+  
+  <div class="status-container">
+    <h4>游戏状态</h4>
+    <div class="status-grid">
+      <div class="status-item">
+        <span class="status-label">状态:</span>
+        <span class="status-value" id="statusText">等待开始</span>
+      </div>
+      <div class="status-item">
+        <span class="status-label">已发现:</span>
+        <span class="status-value"><span id="minesFound">0</span>/<span id="totalMines">0</span></span>
+      </div>
+      <div class="status-item">
+        <span class="status-label">操作次数:</span>
+        <span class="status-value" id="moveCount">0</span>
+      </div>
+      <div class="status-item">
+        <span class="status-label">当前延迟:</span>
+        <span class="status-value"><span id="currentDelay">0</span>ms</span>
+      </div>
+    </div>
+    <div class="progress">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+  </div>
+  
+  <div class="settings">
+    <h4>设置</h4>
+    <div class="setting-row">
+      <label for="minDelay">最小延迟(ms):</label>
+      <input type="number" id="minDelay" value="800" min="300" max="5000">
+    </div>
+    <div class="setting-row">
+      <label for="maxDelay">最大延迟(ms):</label>
+      <input type="number" id="maxDelay" value="2500" min="800" max="10000">
+    </div>
+    <div class="setting-row">
+      <label for="enableDelay">启用随机延迟:</label>
+      <input type="checkbox" id="enableDelay" checked>
+    </div>
+    <div class="setting-row">
+      <label for="humanLike">拟人化操作:</label>
+      <input type="checkbox" id="humanLike" checked>
+    </div>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>

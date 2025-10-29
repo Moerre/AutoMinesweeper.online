@@ -1,0 +1,342 @@
+.minesweeper-solver-ui {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 350px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border: 1px solid #00ffff;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.3), 
+              inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  font-family: 'Segoe UI', Arial, sans-serif;
+  z-index: 10000;
+  user-select: none;
+  overflow: hidden;
+}
+
+.solver-header {
+  background: rgba(0, 0, 0, 0.3);
+  color: #00ffff;
+  padding: 12px 15px;
+  border-radius: 12px 12px 0 0;
+  cursor: move;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+}
+
+.solver-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.solver-controls {
+  display: flex;
+  gap: 5px;
+}
+
+.solver-controls button {
+  background: none;
+  border: none;
+  color: #00ffff;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 3px;
+  transition: all 0.2s;
+}
+
+.solver-controls button:hover {
+  background: rgba(0, 255, 255, 0.1);
+  text-shadow: 0 0 8px rgba(0, 255, 255, 0.9);
+}
+
+.solver-body {
+  padding: 15px;
+}
+
+.solver-controls-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.solver-btn {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  flex: 1;
+  transition: all 0.3s;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.solver-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+.solver-btn:hover::before {
+  left: 100%;
+}
+
+.solver-btn.primary {
+  background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(33, 150, 243, 0.4);
+}
+
+.solver-btn.primary:hover {
+  box-shadow: 0 6px 20px rgba(33, 150, 243, 0.6);
+  transform: translateY(-2px);
+}
+
+.solver-btn.secondary {
+  background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(255, 152, 0, 0.4);
+}
+
+.solver-btn.secondary:hover {
+  box-shadow: 0 6px 20px rgba(255, 152, 0, 0.6);
+  transform: translateY(-2px);
+}
+
+.solver-btn.danger {
+  background: linear-gradient(135deg, #F44336 0%, #D32F2F 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(244, 67, 54, 0.4);
+}
+
+.solver-btn.danger:hover {
+  box-shadow: 0 6px 20px rgba(244, 67, 54, 0.6);
+  transform: translateY(-2px);
+}
+
+.solver-btn.success {
+  background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+}
+
+.solver-btn.success:hover {
+  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.6);
+  transform: translateY(-2px);
+}
+
+.solver-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.solver-btn:disabled::before {
+  display: none;
+}
+
+.solver-settings {
+  margin-bottom: 15px;
+  padding: 15px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(0, 255, 255, 0.1);
+  position: relative;
+}
+
+.solver-settings::before {
+  content: '设置';
+  position: absolute;
+  top: -10px;
+  left: 15px;
+  background: #1a1a2e;
+  color: #00ffff;
+  padding: 0 8px;
+  font-size: 12px;
+  text-shadow: 0 0 5px rgba(0, 255, 255, 0.7);
+}
+
+.setting-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.setting-row label {
+  font-size: 12px;
+  color: #e0e0e0;
+}
+
+.setting-row input[type="number"] {
+  width: 70px;
+  padding: 6px;
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.3);
+  color: #00ffff;
+  text-align: center;
+}
+
+.setting-row input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #00ffff;
+}
+
+.solver-status {
+  margin-bottom: 15px;
+  padding: 15px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(0, 255, 255, 0.1);
+  position: relative;
+}
+
+.solver-status::before {
+  content: '状态';
+  position: absolute;
+  top: -10px;
+  left: 15px;
+  background: #1a1a2e;
+  color: #00ffff;
+  padding: 0 8px;
+  font-size: 12px;
+  text-shadow: 0 0 5px rgba(0, 255, 255, 0.7);
+}
+
+.status-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 12px;
+}
+
+.status-label {
+  color: #b0b0b0;
+}
+
+.status-value {
+  color: #00ffff;
+  font-weight: 600;
+  text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+}
+
+.progress-container {
+  margin-top: 10px;
+}
+
+.progress {
+  height: 6px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #00ffff, #2196F3);
+  width: 0%;
+  transition: width 0.5s;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.solver-logs {
+  height: 120px;
+  overflow-y: auto;
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 11px;
+  background: rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.solver-logs::before {
+  content: '操作日志';
+  position: absolute;
+  top: -10px;
+  left: 15px;
+  background: #1a1a2e;
+  color: #00ffff;
+  padding: 0 8px;
+  font-size: 12px;
+  text-shadow: 0 0 5px rgba(0, 255, 255, 0.7);
+}
+
+.log-entry {
+  margin-bottom: 5px;
+  padding: 4px 6px;
+  border-radius: 3px;
+  border-left: 3px solid;
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.log-entry.info {
+  background: rgba(33, 150, 243, 0.1);
+  border-left-color: #2196F3;
+  color: #90caf9;
+}
+
+.log-entry.success {
+  background: rgba(76, 175, 80, 0.1);
+  border-left-color: #4CAF50;
+  color: #a5d6a7;
+}
+
+.log-entry.warning {
+  background: rgba(255, 152, 0, 0.1);
+  border-left-color: #FF9800;
+  color: #ffcc80;
+}
+
+.log-entry.error {
+  background: rgba(244, 67, 54, 0.1);
+  border-left-color: #F44336;
+  color: #ef9a9a;
+}
+
+.log-time {
+  color: #777;
+  font-size: 10px;
+  margin-right: 5px;
+}
+
+/* 滚动条样式 */
+.solver-logs::-webkit-scrollbar {
+  width: 6px;
+}
+
+.solver-logs::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+.solver-logs::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+.solver-logs::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 255, 255, 0.5);
+}

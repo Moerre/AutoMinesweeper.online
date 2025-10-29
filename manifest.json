@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "扫雷自动解算器",
+  "version": "1.2",
+  "description": "自动解决minesweeper.online网站的扫雷游戏",
+  "permissions": ["activeTab", "storage"],
+  "content_scripts": [
+    {
+      "matches": ["https://minesweeper.online/*"],
+      "js": ["content.js"],
+      "css": ["content.css"]
+    }
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
